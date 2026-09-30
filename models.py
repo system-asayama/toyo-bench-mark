@@ -9,6 +9,9 @@ from sqlalchemy.orm import (DeclarativeBase, Mapped, mapped_column,
 
 DATABASE_URL = os.environ.get(
     "DATABASE_URL", "postgresql://app:app@db:5432/toyo_bench_mark")
+# ドライバを psycopg（v3）に固定。SQLAlchemy のバージョンで既定ドライバが変わっても起動できるようにする
+if DATABASE_URL.startswith(("postgresql://", "postgres://")):
+    DATABASE_URL = "postgresql+psycopg://" + DATABASE_URL.split("://", 1)[1]
 # pool_pre_ping=True で接続は使う時まで遅延（起動時にDB未起動でも落ちない）
 engine = create_engine(DATABASE_URL, pool_pre_ping=True, future=True)
 SessionLocal = sessionmaker(bind=engine, expire_on_commit=False)
