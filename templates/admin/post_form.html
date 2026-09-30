@@ -1,0 +1,94 @@
+{% extends "admin/base.html" %}
+{% set v = draft if draft else post %}
+{% block title %}{{ "記事の編集" if post else "新規投稿" }}{% endblock %}
+{% block content %}
+<div class="admin-head">
+  <h1>{{ "記事の編集" if post else "新しい記事" }}</h1>
+  {% if post %}
+    <div class="admin-head__meta">
+      {% if post.status == "published" %}<span class="badge badge--pub">公開中</span>{% else %}<span class="badge">下書き</span>{% endif %}
+      <a href="/blog/{{ post.id }}" target="_blank">{{ "記事を見る" if post.status == "published" else "プレビュー" }} ↗</a>
+    </div>
+  {% endif %}
+</div>
+{% if error %}<div class="alert alert--error">{{ error }}</div>{% endif %}
+
+<form id="post-form" class="editor" method="post" action="/admin/posts/save" enctype="multipart/form-data">
+  <input type="hidden" name="csrf" value="{{ csrf }}">
+  <input type="hidden" name="post_id" value="{{ post.id if post else 0 }}">
+
+  <div class="editor__main">
+    <input class="editor__title" name="title" placeholder="記事のタイトル" required maxlength="200" value="{{ v.title if v else '' }}">
+
+    <div class="editor__box">
+      <div class="editor__tabs" role="tablist">
+        <button type="button" class="is-active" data-tab="write">書く</button>
+        <button type="button" data-tab="preview">プレビュー</button>
+      </div>
+      <div class="editor__toolbar" data-for="body">
+        <button type="button" data-md="h2" title="見出し">見出し</button>
+        <button type="button" data-md="h3" title="小見出し">小見出し</button>
+        <button type="button" data-md="bold" title="太字"><b>太字</b></button>
+        <button type="button" data-md="ul" title="箇条書き">・箇条書き</button>
+        <button type="button" data-md="ol" title="番号付きリスト">1. 番号</button>
+        <button type="button" data-md="quote" title="引用">引用</button>
+        <button type="button" data-md="link" title="リンク">リンク</button>
+        <label class="editor__img-btn" title="画像を挿入">画像を挿入<input type="file" accept="image/jpeg,image/png,image/gif,image/webp" id="body-image" hidden></label>
+      </div>
+      <textarea id="body" name="body" class="editor__body" rows="22" placeholder="本文を入力してください。&#10;&#10;## 見出し&#10;本文の文章…&#10;&#10;- 箇条書き">{{ v.body if v else '' }}</textarea>
+      <div id="preview" class="editor__preview prose" hidden></div>
+    </div>
+    <p class="help">書き方のヒント：行頭に「## 」で見出し、「- 」で箇条書き、<code>**文字**</code>で太字になります。ツールバーのボタンでも入力できます。</p>
+  </div>
+
+  <aside class="editor__side">
+    <div class="panel">
+      <h2>公開</h2>
+      <div class="form-row">
+        <label for="published_at">公開日時</label>
+        <input id="published_at" type="datetime-local" name="published_at" value="{{ post.published_at.strftime('%Y-%m-%dT%H:%M') if post and post.published_at else '' }}">
+        <small class="help">空欄なら今すぐ公開。未来の日時にすると予約投稿になります。</small>
+      </div>
+      <div class="editor__actions">
+        <button class="btn btn--accent btn--block" type="submit" name="action" value="publish">{{ "更新して公開" if post and post.status == "published" else "公開する" }}</button>
+        <button class="btn btn--ghost btn--block" type="submit" name="action" value="draft">{{ "非公開にして下書きへ" if post and post.status == "published" else "下書き保存" }}</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>カテゴリ</h2>
+      <select name="category">
+        {% for c in categories %}<option value="{{ c }}" {% if v and v.category == c %}selected{% endif %}>{{ c }}</option>{% endfor %}
+      </select>
+    </div>
+
+    <div class="panel">
+      <h2>アイキャッチ画像</h2>
+      {% if post and post.eyecatch_id %}
+        <img class="editor__eyecatch" src="/images/{{ post.eyecatch_id }}" alt="">
+        <label class="check"><input type="checkbox" name="remove_eyecatch" value="1"> 画像を外す</label>
+      {% endif %}
+      <input type="file" name="eyecatch" accept="image/jpeg,image/png,image/gif,image/webp">
+      <small class="help">記事一覧に表示される画像です（5MBまで）。</small>
+    </div>
+
+    <div class="panel">
+      <h2>概要文</h2>
+      <textarea name="excerpt" rows="4" maxlength="300" placeholder="空欄なら本文の冒頭から自動で作成します">{{ v.excerpt if v else '' }}</textarea>
+    </div>
+
+    {% if post %}
+    <div class="panel panel--danger">
+      <button class="btn btn--danger btn--block" type="submit" form="delete-form">この記事を削除</button>
+    </div>
+    {% endif %}
+  </aside>
+</form>
+
+{% if post %}
+<form id="delete-form" method="post" action="/admin/posts/{{ post.id }}/delete" onsubmit="return confirm('この記事を削除します。よろしいですか？（元に戻せません）')">
+  <input type="hidden" name="csrf" value="{{ csrf }}">
+</form>
+{% endif %}
+{% endblock %}
+{% block scripts %}<script src="/static/js/admin.js?v=1" defer></script>{% endblock %}

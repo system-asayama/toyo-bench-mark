@@ -5,6 +5,11 @@ services:
       - "${WEB_PORT:-8080}:8000"
     environment:
       DATABASE_URL: postgresql://app:app@db:5432/toyo_bench_mark
+      # ログイン状態を再起動後も保つための鍵（サーバーの .env に SECRET_KEY=ランダム文字列 を書く）
+      SECRET_KEY: ${SECRET_KEY:-}
+      # 任意：ADMIN_PASSWORD を設定すると、その管理者（ユーザー名 ADMIN_USER）を自動作成
+      ADMIN_USER: ${ADMIN_USER:-admin}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-}
     depends_on:
       - db
     restart: unless-stopped

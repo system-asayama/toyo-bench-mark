@@ -1,0 +1,16 @@
+{% extends "admin/base.html" %}
+{% block title %}ログイン{% endblock %}
+{% block content %}
+<div class="auth-card">
+  <img src="/static/img/logo.svg" alt="" width="84" height="60">
+  <h1>管理画面ログイン</h1>
+  {% if error %}<div class="alert alert--error">{{ error }}</div>{% endif %}
+  <form method="post" action="/admin/login" class="form">
+    <input type="hidden" name="csrf" value="{{ csrf }}">
+    <div class="form-row"><label for="username">ユーザー名</label><input id="username" name="username" autocomplete="username" required autofocus></div>
+    <div class="form-row"><label for="password">パスワード</label><input id="password" name="password" type="password" autocomplete="current-password" required></div>
+    <button class="btn btn--primary btn--block" type="submit">ログイン</button>
+  </form>
+  <p class="auth-card__back"><a href="/">← サイトへ戻る</a></p>
+</div>
+{% endblock %}

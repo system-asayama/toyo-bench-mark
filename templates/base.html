@@ -1,0 +1,80 @@
+{% from "_macros.html" import icon %}<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}{{ company.name }}｜岡山の電力・太陽光発電・蓄電池{% endblock %}</title>
+<meta name="description" content="{% block description %}岡山市の{{ company.name }}。電力プランの見直し・切替サポート、太陽光発電システム、蓄電池の販売・施工を行っています。ご相談・お見積りは無料です。{% endblock %}">
+<meta property="og:title" content="{{ self.title() }}">
+<meta property="og:description" content="{{ self.description() }}">
+<meta property="og:type" content="{% block og_type %}website{% endblock %}">
+{% block og_image %}{% endblock %}
+<link rel="icon" href="/static/img/favicon.svg" type="image/svg+xml">
+<link rel="alternate" type="application/rss+xml" title="{{ company.short }} ブログ" href="/feed.xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/style.css?v=1">
+</head>
+<body>
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a href="/" class="brand" aria-label="{{ company.name }} トップへ">
+      <img src="/static/img/logo.svg" alt="" width="56" height="40">
+      <span class="brand__text"><span class="brand__name">{{ company.name }}</span><span class="brand__sub">Toyo Bench Mark</span></span>
+    </a>
+    <button class="nav-toggle" aria-controls="site-nav" aria-expanded="false" aria-label="メニュー"><span></span><span></span><span></span></button>
+    <nav id="site-nav" class="site-nav">
+      <ul>
+        <li><a href="/services/electricity">電力</a></li>
+        <li><a href="/services/solar">太陽光</a></li>
+        <li><a href="/services/battery">蓄電池</a></li>
+        <li><a href="/blog">ブログ</a></li>
+        <li><a href="/company">会社概要</a></li>
+      </ul>
+      <a class="nav-tel" href="tel:{{ company.tel|replace('-', '') }}">{{ icon("phone") }}{{ company.tel }}</a>
+      <a class="btn btn--accent nav-cta" href="/contact">無料相談</a>
+    </nav>
+  </div>
+</header>
+
+{% if user %}
+<div class="admin-bar"><div class="container">管理者としてログイン中：<a href="/admin">管理画面へ</a>{% block admin_bar %}{% endblock %}</div></div>
+{% endif %}
+
+<main>
+{% block content %}{% endblock %}
+</main>
+
+<footer class="site-footer">
+  <div class="container site-footer__grid">
+    <div>
+      <a href="/" class="brand brand--footer"><img src="/static/img/logo.svg" alt="" width="56" height="40"><span class="brand__text"><span class="brand__name">{{ company.name }}</span><span class="brand__sub">Toyo Bench Mark</span></span></a>
+      <address>
+        〒{{ company.zip }}<br>{{ company.address }}<br>
+        TEL <a href="tel:{{ company.tel|replace('-', '') }}">{{ company.tel }}</a>　FAX {{ company.fax }}
+      </address>
+    </div>
+    <div class="footer-links">
+      <div>
+        <h4>事業内容</h4>
+        <ul>{% for s in services.values() %}<li><a href="/services/{{ s.slug }}">{{ s.title }}</a></li>{% endfor %}</ul>
+      </div>
+      <div>
+        <h4>企業情報</h4>
+        <ul>
+          <li><a href="/company">会社概要</a></li>
+          <li><a href="/blog">ブログ</a></li>
+          <li><a href="/contact">お問い合わせ</a></li>
+          <li><a href="/privacy">個人情報保護方針</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="site-footer__bottom"><div class="container">&copy; {{ now().year }} {{ company.name_en }}</div></div>
+</footer>
+
+<a class="float-cta" href="/contact">{{ icon("mail") }}無料相談</a>
+<script src="/static/js/main.js?v=1" defer></script>
+</body>
+</html>

@@ -2,5 +2,9 @@ fastapi>=0.110
 uvicorn>=0.29
 sqlalchemy>=2.0
 psycopg2-binary>=2.9
+jinja2>=3.1
+python-multipart>=0.0.9
+itsdangerous>=2.1
+markdown-it-py>=3.0
 # 1.9 未満は SSE のメッセージ経路が異なる（server.py のコメント参照）
 mcp>=1.9,<2

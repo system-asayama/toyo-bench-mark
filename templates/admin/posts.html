@@ -1,0 +1,44 @@
+{% extends "admin/base.html" %}
+{% block title %}記事一覧{% endblock %}
+{% block content %}
+<div class="admin-head">
+  <h1>ブログ記事</h1>
+  <a class="btn btn--accent" href="/admin/posts/new">＋ 新しい記事を書く</a>
+</div>
+{% if unread %}<div class="alert alert--info">未読のお問い合わせが {{ unread }} 件あります。<a href="/admin/inquiries">確認する →</a></div>{% endif %}
+
+<nav class="tabs">
+  <a href="/admin" class="{{ 'is-active' if not status }}">すべて</a>
+  <a href="/admin?status=published" class="{{ 'is-active' if status == 'published' }}">公開中</a>
+  <a href="/admin?status=draft" class="{{ 'is-active' if status == 'draft' }}">下書き</a>
+</nav>
+
+{% if posts %}
+<div class="table-wrap">
+<table class="admin-table">
+  <thead><tr><th>タイトル</th><th>カテゴリ</th><th>状態</th><th>公開日</th><th>更新日</th><th></th></tr></thead>
+  <tbody>
+  {% for p in posts %}
+  <tr>
+    <td class="admin-table__title"><a href="/admin/posts/{{ p.id }}">{{ p.title }}</a></td>
+    <td>{{ p.category }}</td>
+    <td>
+      {% if p.status == "published" and p.published_at and p.published_at > now_dt %}<span class="badge badge--scheduled">予約</span>
+      {% elif p.status == "published" %}<span class="badge badge--pub">公開中</span>
+      {% else %}<span class="badge">下書き</span>{% endif %}
+    </td>
+    <td>{{ p.published_at|date("%Y/%m/%d %H:%M") }}</td>
+    <td>{{ p.updated_at|date("%Y/%m/%d %H:%M") }}</td>
+    <td class="admin-table__actions"><a href="/admin/posts/{{ p.id }}">編集</a><a href="/blog/{{ p.id }}" target="_blank">表示</a></td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+{% else %}
+<div class="empty-state">
+  <p>まだ記事がありません。</p>
+  <a class="btn btn--accent" href="/admin/posts/new">最初の記事を書く</a>
+</div>
+{% endif %}
+{% endblock %}

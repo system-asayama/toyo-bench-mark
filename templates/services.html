@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% from "_macros.html" import icon, cta %}
+{% block title %}事業内容｜{{ company.name }}{% endblock %}
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <p class="page-hero__en">SERVICE</p>
+    <h1 class="page-hero__title">事業内容</h1>
+    <p class="page-hero__lead">電力・太陽光・蓄電池の3つの事業で、エネルギーの「えらぶ・つくる・ためる」をサポートします。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    {% for s in services.values() %}
+    <div class="service-row service-row--{{ s.color }}">
+      <div class="service-row__visual"><span class="service-row__icon">{{ icon(s.icon) }}</span><span class="service-row__name">{{ s.name }}</span></div>
+      <div class="service-row__text">
+        <h2>{{ s.title }}</h2>
+        <p>{{ s.lead }}</p>
+        <ul class="check-list">{% for t, _ in s.points %}<li>{{ icon("check") }}{{ t }}</li>{% endfor %}</ul>
+        <a class="btn btn--primary" href="/services/{{ s.slug }}">詳しく見る{{ icon("arrow") }}</a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section section--tint">
+  <div class="container">
+    <div class="section-head">
+      <p class="section-head__en">SET PLAN</p>
+      <h2 class="section-head__title">組み合わせで、効果はもっと大きく</h2>
+    </div>
+    <div class="combo">
+      <div class="combo__item combo__item--yellow">{{ icon("sun") }}<strong>太陽光でつくる</strong><span>昼間の電気を自家発電</span></div>
+      <span class="combo__plus">＋</span>
+      <div class="combo__item combo__item--green">{{ icon("battery") }}<strong>蓄電池でためる</strong><span>余った電気を夜や停電時に</span></div>
+      <span class="combo__plus">＋</span>
+      <div class="combo__item combo__item--blue">{{ icon("bolt") }}<strong>電力プランをえらぶ</strong><span>足りない分はおトクに購入</span></div>
+    </div>
+    <p class="combo__note">ご家庭・事業所の電気の使い方にあわせて、最適な組み合わせをご提案します。</p>
+  </div>
+</section>
+
+{{ cta() }}
+{% endblock %}

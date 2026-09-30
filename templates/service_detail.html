@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% from "_macros.html" import icon, cta %}
+{% block title %}{{ svc.title }}｜{{ company.name }}{% endblock %}
+{% block description %}{{ svc.summary }}{% endblock %}
+{% block content %}
+<section class="page-hero page-hero--{{ svc.color }}">
+  <div class="container page-hero__row">
+    <div>
+      <nav class="breadcrumb"><a href="/">トップ</a> / <a href="/services">事業内容</a> / {{ svc.name }}</nav>
+      <h1 class="page-hero__title">{{ svc.title }}</h1>
+      <p class="page-hero__lead">{{ svc.lead }}</p>
+    </div>
+    <span class="page-hero__icon">{{ icon(svc.icon) }}</span>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <p class="section-head__en">POINT</p>
+      <h2 class="section-head__title">{{ svc.name }}のポイント</h2>
+    </div>
+    <div class="point-grid">
+      {% for t, d in svc.points %}
+      <div class="point point--{{ svc.color }}"><span class="point__num">{{ "%02d"|format(loop.index) }}</span><h3>{{ t }}</h3><p>{{ d }}</p></div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% for heading, items in svc.details %}
+<section class="section section--tint">
+  <div class="container container--narrow">
+    <div class="section-head"><h2 class="section-head__title">{{ heading }}</h2></div>
+    <ul class="check-list check-list--box">{% for it in items %}<li>{{ icon("check") }}{{ it }}</li>{% endfor %}</ul>
+  </div>
+</section>
+{% endfor %}
+
+<section class="section">
+  <div class="container">
+    <div class="section-head"><p class="section-head__en">FLOW</p><h2 class="section-head__title">ご相談の流れ</h2></div>
+    <ol class="flow-list">
+      {% for step, desc in flow %}<li><span class="flow-list__num">STEP {{ loop.index }}</span><h3>{{ step }}</h3><p>{{ desc }}</p></li>{% endfor %}
+    </ol>
+  </div>
+</section>
+
+<section class="section section--tint">
+  <div class="container">
+    <div class="section-head"><h2 class="section-head__title">その他の事業</h2></div>
+    <div class="service-grid service-grid--2">
+      {% for s in services.values() if s.slug != svc.slug %}
+      <a class="service-card service-card--{{ s.color }}" href="/services/{{ s.slug }}">
+        <span class="service-card__icon">{{ icon(s.icon) }}</span>
+        <h3 class="service-card__title">{{ s.title }}</h3>
+        <p>{{ s.summary }}</p>
+        <span class="link-more">詳しく見る{{ icon("arrow") }}</span>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{{ cta() }}
+{% endblock %}

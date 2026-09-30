@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% from "_macros.html" import icon, post_card, cta %}
+{% block content %}
+<section class="hero">
+  <div class="container hero__inner">
+    <div class="hero__text">
+      <p class="hero__eyebrow">岡山の電力・太陽光・蓄電池</p>
+      <h1 class="hero__title">電気を<span class="hl hl--blue">えらぶ</span>。<br>電気を<span class="hl hl--yellow">つくる</span>。<br>電気を<span class="hl hl--green">ためる</span>。</h1>
+      <p class="hero__lead">電力プランの見直しから、太陽光発電・蓄電池の導入まで。<br class="pc">暮らしと事業のエネルギーを、{{ company.short }}がまるごとサポートします。</p>
+      <div class="hero__actions">
+        <a class="btn btn--accent btn--lg" href="/contact">無料で相談する{{ icon("arrow") }}</a>
+        <a class="btn btn--ghost btn--lg" href="/services">事業内容を見る</a>
+      </div>
+    </div>
+    <div class="hero__art" aria-hidden="true">
+      <svg viewBox="0 0 480 400" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e6f1ff"/><stop offset="1" stop-color="#f7fbff"/></linearGradient>
+          <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2a6fd6"/><stop offset="1" stop-color="#16408a"/></linearGradient>
+        </defs>
+        <circle cx="240" cy="200" r="190" fill="url(#sky)"/>
+        <g class="sun-rays" stroke="#f5c400" stroke-width="6" stroke-linecap="round">
+          <path d="M370 40v18M370 122v18M320 90h18M402 90h18M335 55l12 12M393 113l12 12M335 125l12-12M393 67l12-12"/>
+        </g>
+        <circle cx="370" cy="90" r="28" fill="#ffd21f"/>
+        <rect x="40" y="318" width="400" height="10" rx="5" fill="#cfe3c8"/>
+        <path d="M100 318V210l110-80 110 80v108z" fill="#fff" stroke="#1d3b6b" stroke-width="5" stroke-linejoin="round"/>
+        <path d="M80 222 210 124l130 98" fill="none" stroke="#1d3b6b" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+        <g transform="translate(212 136) skewY(37) " >
+          <rect x="4" y="-2" width="104" height="44" rx="3" fill="url(#panel)"/>
+          <path d="M30 -2v44M56 -2v44M82 -2v44M4 20h104" stroke="#8fb6f0" stroke-width="2"/>
+        </g>
+        <rect x="185" y="258" width="50" height="60" rx="4" fill="#dbe8f7" stroke="#1d3b6b" stroke-width="4"/>
+        <rect x="124" y="236" width="40" height="34" rx="3" fill="#fff6c9" stroke="#1d3b6b" stroke-width="4"/>
+        <rect x="256" y="236" width="40" height="34" rx="3" fill="#fff6c9" stroke="#1d3b6b" stroke-width="4"/>
+        <rect x="350" y="248" width="56" height="70" rx="8" fill="#22a45a" stroke="#1d3b6b" stroke-width="4"/>
+        <rect x="370" y="240" width="16" height="10" rx="2" fill="#1d3b6b"/>
+        <path d="m382 262-12 20h12l-8 20" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path class="flow" d="M320 290h30" stroke="#f5c400" stroke-width="5" stroke-linecap="round" stroke-dasharray="4 8"/>
+        <g transform="translate(40 150)">
+          <path d="M20 0v168M0 30h40M6 70h28" stroke="#1d3b6b" stroke-width="5" stroke-linecap="round"/>
+          <path class="flow" d="M40 30C80 40 90 90 100 120" fill="none" stroke="#2a6fd6" stroke-width="4" stroke-dasharray="4 8" stroke-linecap="round"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <p class="section-head__en">SERVICE</p>
+      <h2 class="section-head__title">事業内容</h2>
+      <p class="section-head__lead">「えらぶ・つくる・ためる」の3つで、エネルギーコストの削減と安心をお届けします。</p>
+    </div>
+    <div class="service-grid">
+      {% for s in services.values() %}
+      <a class="service-card service-card--{{ s.color }}" href="/services/{{ s.slug }}">
+        <span class="service-card__icon">{{ icon(s.icon) }}</span>
+        <span class="service-card__label">{{ s.name }}</span>
+        <h3 class="service-card__title">{{ s.title }}</h3>
+        <p>{{ s.summary }}</p>
+        <span class="link-more">詳しく見る{{ icon("arrow") }}</span>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section section--tint">
+  <div class="container">
+    <div class="section-head">
+      <p class="section-head__en">REASON</p>
+      <h2 class="section-head__title">{{ company.short }}が選ばれる理由</h2>
+    </div>
+    <div class="reason-grid">
+      <div class="reason"><span class="reason__num">01</span><h3>電気のことをワンストップで</h3><p>電力プランの見直し、太陽光、蓄電池。バラバラに相談しなくても、まとめて最適な組み合わせをご提案します。</p></div>
+      <div class="reason"><span class="reason__num">02</span><h3>地元・岡山の会社だから</h3><p>岡山市に拠点を置く地元企業です。現地調査から施工、アフターまで、顔の見えるおつきあいを大切にしています。</p></div>
+      <div class="reason"><span class="reason__num">03</span><h3>数字でわかるご提案</h3><p>電気のご使用状況をもとにシミュレーションを行い、導入効果を数字でご説明。ご納得いただけるまでご相談に応じます。</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <p class="section-head__en">FLOW</p>
+      <h2 class="section-head__title">ご相談の流れ</h2>
+    </div>
+    <ol class="flow-list">
+      {% for step, desc in flow %}
+      <li><span class="flow-list__num">STEP {{ loop.index }}</span><h3>{{ step }}</h3><p>{{ desc }}</p></li>
+      {% endfor %}
+    </ol>
+  </div>
+</section>
+
+<section class="section section--tint">
+  <div class="container">
+    <div class="section-head section-head--row">
+      <div>
+        <p class="section-head__en">BLOG</p>
+        <h2 class="section-head__title">ブログ・お知らせ</h2>
+      </div>
+      <a class="link-more" href="/blog">記事一覧へ{{ icon("arrow") }}</a>
+    </div>
+    {% if posts %}
+    <div class="post-grid">{% for p in posts %}{{ post_card(p) }}{% endfor %}</div>
+    {% else %}
+    <p class="empty">記事は準備中です。</p>
+    {% endif %}
+  </div>
+</section>
+
+<section class="section">
+  <div class="container container--narrow">
+    <div class="section-head">
+      <p class="section-head__en">FAQ</p>
+      <h2 class="section-head__title">よくあるご質問</h2>
+    </div>
+    <div class="faq">
+      {% for q, a in faq %}
+      <details><summary>{{ q }}</summary><p>{{ a }}</p></details>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{{ cta() }}
+{% endblock %}

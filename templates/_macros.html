@@ -1,0 +1,58 @@
+{% macro icon(name, cls="icon") -%}
+{%- if name == "bolt" -%}
+<svg class="{{ cls }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"/></svg>
+{%- elif name == "sun" -%}
+<svg class="{{ cls }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+{%- elif name == "battery" -%}
+<svg class="{{ cls }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="17" height="10" rx="2"/><path d="M22 11v2"/><path d="m11 9-2 3h3l-2 3"/></svg>
+{%- elif name == "phone" -%}
+<svg class="{{ cls }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>
+{%- elif name == "mail" -%}
+<svg class="{{ cls }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
+{%- elif name == "check" -%}
+<svg class="{{ cls }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+{%- elif name == "arrow" -%}
+<svg class="{{ cls }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+{%- elif name == "pin" -%}
+<svg class="{{ cls }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
+{%- endif -%}
+{%- endmacro %}
+
+{% macro cat_class(category) -%}
+{%- if category == "電力" -%}blue{%- elif category in ("太陽光", "補助金") -%}yellow{%- elif category in ("蓄電池", "施工事例") -%}green{%- else -%}gray{%- endif -%}
+{%- endmacro %}
+
+{% macro cat_icon(category) -%}
+{%- if category == "電力" -%}bolt{%- elif category in ("太陽光", "補助金") -%}sun{%- elif category in ("蓄電池", "施工事例") -%}battery{%- else -%}bolt{%- endif -%}
+{%- endmacro %}
+
+{% macro post_card(post) -%}
+<article class="post-card">
+  <a href="/blog/{{ post.id }}" class="post-card__link">
+    <div class="post-card__thumb thumb--{{ cat_class(post.category) }}">
+      {% if post.eyecatch_id %}<img src="/images/{{ post.eyecatch_id }}" alt="" loading="lazy">
+      {% else %}{{ icon(cat_icon(post.category), "thumb-icon") }}{% endif %}
+    </div>
+    <div class="post-card__body">
+      <div class="post-meta"><span class="tag tag--{{ cat_class(post.category) }}">{{ post.category }}</span><time datetime="{{ post.published_at.isoformat() if post.published_at else '' }}">{{ post.published_at|date }}</time></div>
+      <h3 class="post-card__title">{{ post.title }}</h3>
+      {% if post.excerpt %}<p class="post-card__excerpt">{{ post.excerpt }}</p>{% endif %}
+    </div>
+  </a>
+</article>
+{%- endmacro %}
+
+{% macro cta() -%}
+<section class="cta">
+  <div class="container cta__inner">
+    <div>
+      <h2 class="cta__title">ご相談・お見積りは無料です</h2>
+      <p>電気代の見直し、太陽光・蓄電池の導入など、お気軽にご相談ください。</p>
+    </div>
+    <div class="cta__actions">
+      <a class="cta__tel" href="tel:{{ company.tel|replace('-', '') }}">{{ icon("phone") }}<span><small>お電話でのお問い合わせ（{{ company.hours }}）</small>{{ company.tel }}</span></a>
+      <a class="btn btn--accent btn--lg" href="/contact">{{ icon("mail") }}フォームで相談する</a>
+    </div>
+  </div>
+</section>
+{%- endmacro %}

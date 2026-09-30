@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% from "_macros.html" import icon, post_card %}
+{% block title %}{% if category %}{{ category }}の記事｜{% endif %}ブログ｜{{ company.name }}{% endblock %}
+{% block description %}{{ company.name }}のブログ。電力・太陽光発電・蓄電池・補助金の情報や施工事例をお届けします。{% endblock %}
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <p class="page-hero__en">BLOG</p>
+    <h1 class="page-hero__title">ブログ・お知らせ</h1>
+    <p class="page-hero__lead">電気代の節約のコツ、太陽光・蓄電池の最新情報、補助金、施工事例などをお届けします。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <nav class="cat-filter" aria-label="カテゴリ">
+      <a href="/blog" class="{{ 'is-active' if not category }}">すべて</a>
+      {% for c in blog_categories %}<a href="/blog?category={{ c|urlencode }}" class="{{ 'is-active' if category == c }}">{{ c }}</a>{% endfor %}
+    </nav>
+
+    {% if posts %}
+    <div class="post-grid">{% for p in posts %}{{ post_card(p) }}{% endfor %}</div>
+    {% else %}
+    <p class="empty">{% if category %}「{{ category }}」の記事はまだありません。{% else %}記事は準備中です。{% endif %}</p>
+    {% endif %}
+
+    {% if pages > 1 %}
+    <nav class="pager" aria-label="ページ">
+      {% set qs = "&category=" ~ (category|urlencode) if category else "" %}
+      {% if page > 1 %}<a href="/blog?page={{ page - 1 }}{{ qs }}">← 前へ</a>{% endif %}
+      {% for n in range(1, pages + 1) %}
+        {% if n == page %}<span class="is-current">{{ n }}</span>{% else %}<a href="/blog?page={{ n }}{{ qs }}">{{ n }}</a>{% endif %}
+      {% endfor %}
+      {% if page < pages %}<a href="/blog?page={{ page + 1 }}{{ qs }}">次へ →</a>{% endif %}
+    </nav>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}
