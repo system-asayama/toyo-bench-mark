@@ -1,17 +1,42 @@
-# toyo-bench-mark（DB付き Web アプリ + MCP サーバー）
+# 株式会社 東洋ベンチマーク 公式サイト
 
-1つの Python アプリ（FastAPI）で、Web ページ・PostgreSQL・
-AI から使えるツール（MCP）の全部を提供します。
+電力・太陽光発電・蓄電池の会社サイト（ブログ・お問い合わせ・管理画面付き）。
+FastAPI + PostgreSQL（docker compose）で動きます。
 
-## 構成
-- `web` … FastAPI（Web: `/`、MCP: `/mcp/sse`、内部 8000 番）
-- `db`  … PostgreSQL（データ保存先）
+## ページ
+| URL | 内容 |
+|---|---|
+| `/` | トップ（事業紹介・選ばれる理由・流れ・最新ブログ・FAQ） |
+| `/services`, `/services/electricity`, `/services/solar`, `/services/battery` | 事業内容 |
+| `/company` | 会社概要（地図付き） |
+| `/blog` | ブログ一覧（カテゴリ絞り込み・ページ送り） / `/blog/<番号>` 記事 |
+| `/contact` | お問い合わせフォーム（内容は DB に保存し管理画面で確認） |
+| `/privacy` | 個人情報保護方針 |
+| `/feed.xml`, `/sitemap.xml`, `/robots.txt` | RSS・検索エンジン向け |
 
-## デプロイ
-「環境別デプロイ設定」→「自動セットアップを実行」で本番反映されます。
+## ブログの書き方
+1. デプロイ後、`https://<ドメイン>/admin` を開く
+2. **初回だけ**管理者アカウント作成画面が出るので、ユーザー名とパスワードを決める
+   （公開直後に必ず行ってください。作成済みになると画面は出なくなります）
+3. 「＋ 新しい記事を書く」→ タイトル・本文・カテゴリ・アイキャッチ画像を入れて「公開する」
+   - 本文はツールバー（見出し・太字・箇条書き・画像挿入など）で書けます
+   - 公開日時を未来にすると予約投稿、「下書き保存」で非公開のまま保存
+4. お問い合わせは管理画面の「お問い合わせ」で確認できます
 
-## Web / MCP
-- Web: `https://<あなたのドメイン>/`
-- MCP: `https://<あなたのドメイン>/mcp/sse` を Claude Desktop に登録
-- `db_now` ツールは DB に接続して現在時刻を返すサンプルです。
-  `@mcp.tool()` を足せば、DB を読み書きするツールを自由に増やせます。
+画像・記事はすべて PostgreSQL に保存されるため、再デプロイしても消えません。
+
+## 設定（任意・サーバーの `.env`）
+- `SECRET_KEY` … ランダムな長い文字列。未設定だと再起動のたびにログアウトされます
+- `ADMIN_USER` / `ADMIN_PASSWORD` … 設定すると、その管理者を自動作成（初回画面の代わり）
+
+## 文言の変更
+会社情報・サービス説明・FAQ などは `content.py` にまとめてあります。
+
+## ローカルで動かす
+```
+pip install -r requirements.txt
+DATABASE_URL=sqlite:///./local.db uvicorn server:app --reload
+```
+
+## MCP
+`/mcp/sse` で AI 用ツール（`db_now`, `list_blog_posts`：読み取り専用）を提供しています。

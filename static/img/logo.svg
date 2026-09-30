@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 100" role="img" aria-label="TBM">
+  <rect x="2" y="2" width="136" height="96" rx="6" fill="#fff" stroke="#b8bec6" stroke-width="3"/>
+  <!-- T -->
+  <path d="M10 12h46v18H42v58H24V30H10z" fill="#1d63c9"/>
+  <!-- B -->
+  <path d="M44 34h26c12 0 18 6 18 13 0 5-3 9-7 10 6 2 9 6 9 12 0 10-8 17-20 17H44z" fill="#ffcd1c"/>
+  <path d="M60 46v10h7c3 0 5-2 5-5s-2-5-5-5zM60 66v10h8c3 0 5-2 5-5s-2-5-5-5z" fill="#fff"/>
+  <!-- M -->
+  <path d="M84 12h18l9 26 9-26h18v76h-16V44l-8 22h-6l-8-22v44H84z" fill="#1e9b55"/>
+</svg>

@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>{% block title %}管理画面{% endblock %}｜{{ company.short }}</title>
+<link rel="icon" href="/static/img/favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/style.css?v=1">
+<link rel="stylesheet" href="/static/css/admin.css?v=1">
+</head>
+<body class="admin">
+{% if user %}
+<header class="admin-header">
+  <div class="admin-header__inner">
+    <a class="admin-brand" href="/admin"><img src="/static/img/logo.svg" alt="" width="42" height="30">管理画面</a>
+    <nav class="admin-nav">
+      <a href="/admin">記事一覧</a>
+      <a href="/admin/posts/new">＋ 新規投稿</a>
+      <a href="/admin/inquiries">お問い合わせ</a>
+      <a href="/" target="_blank">サイトを見る ↗</a>
+      <details class="admin-menu">
+        <summary>{{ user }}</summary>
+        <div>
+          <a href="/admin/password">パスワード変更</a>
+          <form method="post" action="/admin/logout"><input type="hidden" name="csrf" value="{{ csrf }}"><button type="submit">ログアウト</button></form>
+        </div>
+      </details>
+    </nav>
+  </div>
+</header>
+{% endif %}
+<main class="admin-main">
+  {% if flash %}<div class="alert alert--ok">{{ flash }}</div>{% endif %}
+  {% block content %}{% endblock %}
+</main>
+{% block scripts %}{% endblock %}
+</body>
+</html>

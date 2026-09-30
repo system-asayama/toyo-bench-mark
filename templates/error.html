@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}{{ "ページが見つかりません" if code == 404 else "エラー" }}｜{{ company.name }}{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="container container--narrow done">
+    <p class="error-code">{{ code }}</p>
+    {% if code == 404 %}
+    <h1>ページが見つかりません</h1>
+    <p>お探しのページは移動または削除された可能性があります。</p>
+    {% else %}
+    <h1>エラーが発生しました</h1>
+    <p>{{ detail }}</p>
+    {% endif %}
+    <a class="btn btn--primary" href="/">トップページへ戻る</a>
+  </div>
+</section>
+{% endblock %}

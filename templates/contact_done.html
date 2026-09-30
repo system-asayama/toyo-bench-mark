@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% from "_macros.html" import icon %}
+{% block title %}送信完了｜{{ company.name }}{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="container container--narrow done">
+    <span class="done__icon">{{ icon("check") }}</span>
+    <h1>お問い合わせありがとうございます</h1>
+    <p>内容を確認のうえ、担当者より折り返しご連絡いたします。<br>お急ぎの場合はお電話（<a href="tel:{{ company.tel|replace('-', '') }}">{{ company.tel }}</a>）でもお気軽にどうぞ。</p>
+    <a class="btn btn--primary" href="/">トップページへ戻る</a>
+  </div>
+</section>
+{% endblock %}

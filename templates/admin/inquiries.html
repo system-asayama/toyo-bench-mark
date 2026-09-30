@@ -1,0 +1,30 @@
+{% extends "admin/base.html" %}
+{% block title %}お問い合わせ{% endblock %}
+{% block content %}
+<div class="admin-head"><h1>お問い合わせ一覧</h1></div>
+{% if items %}
+<div class="inq-list">
+  {% for i in items %}
+  <details class="inq {{ 'is-unread' if not i.is_read }}" {% if not i.is_read %}open{% endif %}>
+    <summary>
+      {% if not i.is_read %}<span class="badge badge--new">未読</span>{% endif %}
+      <strong>{{ i.name }}</strong>{% if i.company %}（{{ i.company }}）{% endif %}
+      <span class="inq__topic">{{ i.topic }}</span>
+      <time>{{ i.created_at|date("%Y/%m/%d %H:%M") }}</time>
+    </summary>
+    <dl>
+      <dt>メール</dt><dd><a href="mailto:{{ i.email }}">{{ i.email }}</a></dd>
+      {% if i.phone %}<dt>電話</dt><dd><a href="tel:{{ i.phone }}">{{ i.phone }}</a></dd>{% endif %}
+      <dt>内容</dt><dd class="inq__msg">{{ i.message }}</dd>
+    </dl>
+    <form method="post" action="/admin/inquiries/{{ i.id }}/read">
+      <input type="hidden" name="csrf" value="{{ csrf }}">
+      <button class="btn btn--ghost btn--sm" type="submit">{{ "未読に戻す" if i.is_read else "対応済みにする" }}</button>
+    </form>
+  </details>
+  {% endfor %}
+</div>
+{% else %}
+<div class="empty-state"><p>お問い合わせはまだありません。</p></div>
+{% endif %}
+{% endblock %}

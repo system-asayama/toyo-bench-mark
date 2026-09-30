@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% from "_macros.html" import icon %}
+{% block title %}お問い合わせ｜{{ company.name }}{% endblock %}
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <p class="page-hero__en">CONTACT</p>
+    <h1 class="page-hero__title">お問い合わせ・無料相談</h1>
+    <p class="page-hero__lead">ご相談・現地調査・お見積りは無料です。お気軽にお問い合わせください。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container container--narrow">
+    <div class="tel-box">
+      <p>お電話でのお問い合わせ</p>
+      <a href="tel:{{ company.tel|replace('-', '') }}">{{ icon("phone") }}{{ company.tel }}</a>
+      <small>受付時間：{{ company.hours }}　FAX：{{ company.fax }}</small>
+    </div>
+
+    {% if errors %}
+    <div class="alert alert--error"><ul>{% for e in errors %}<li>{{ e }}</li>{% endfor %}</ul></div>
+    {% endif %}
+
+    <form class="form" method="post" action="/contact" novalidate>
+      <input type="hidden" name="csrf" value="{{ csrf }}">
+      <div class="hp" aria-hidden="true"><label>Website<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+      <div class="form-row">
+        <label for="topic">ご相談内容</label>
+        <select id="topic" name="topic">
+          {% for t in topics %}<option value="{{ t }}" {% if form.topic == t %}selected{% endif %}>{{ t }}</option>{% endfor %}
+        </select>
+      </div>
+      <div class="form-row">
+        <label for="name">お名前 <span class="req">必須</span></label>
+        <input id="name" name="name" type="text" required maxlength="100" autocomplete="name" value="{{ form.name or '' }}" placeholder="例）岡山 太郎">
+      </div>
+      <div class="form-row">
+        <label for="company_name">会社名 <span class="opt">任意</span></label>
+        <input id="company_name" name="company_name" type="text" maxlength="200" autocomplete="organization" value="{{ form.company_name or '' }}">
+      </div>
+      <div class="form-row">
+        <label for="email">メールアドレス <span class="req">必須</span></label>
+        <input id="email" name="email" type="email" required maxlength="200" autocomplete="email" value="{{ form.email or '' }}" placeholder="例）info@example.com">
+      </div>
+      <div class="form-row">
+        <label for="phone">電話番号 <span class="opt">任意</span></label>
+        <input id="phone" name="phone" type="tel" maxlength="50" autocomplete="tel" value="{{ form.phone or '' }}" placeholder="例）086-000-0000">
+      </div>
+      <div class="form-row">
+        <label for="message">お問い合わせ内容 <span class="req">必須</span></label>
+        <textarea id="message" name="message" rows="7" required maxlength="5000" placeholder="例）毎月の電気代が約2万円です。太陽光と蓄電池の導入を検討しています。">{{ form.message or '' }}</textarea>
+      </div>
+      <div class="form-row form-row--check">
+        <label><input type="checkbox" name="agree" value="1" required> <span><a href="/privacy" target="_blank">個人情報の取り扱い</a>に同意する</span></label>
+      </div>
+      <button class="btn btn--accent btn--lg btn--block" type="submit">送信する</button>
+    </form>
+  </div>
+</section>
+{% endblock %}

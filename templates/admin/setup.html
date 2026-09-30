@@ -1,0 +1,17 @@
+{% extends "admin/base.html" %}
+{% block title %}初期設定{% endblock %}
+{% block content %}
+<div class="auth-card">
+  <img src="/static/img/logo.svg" alt="" width="84" height="60">
+  <h1>管理者アカウントの作成</h1>
+  <p class="muted">最初の 1 回だけ表示される画面です。ブログを書くためのログイン情報を決めてください。</p>
+  {% if error %}<div class="alert alert--error">{{ error }}</div>{% endif %}
+  <form method="post" action="/admin/setup" class="form">
+    <input type="hidden" name="csrf" value="{{ csrf }}">
+    <div class="form-row"><label for="username">ユーザー名</label><input id="username" name="username" autocomplete="username" required maxlength="64" value="admin"></div>
+    <div class="form-row"><label for="password">パスワード（8文字以上）</label><input id="password" name="password" type="password" autocomplete="new-password" required minlength="8"></div>
+    <div class="form-row"><label for="password2">パスワード（確認）</label><input id="password2" name="password2" type="password" autocomplete="new-password" required minlength="8"></div>
+    <button class="btn btn--primary btn--block" type="submit">作成してログイン</button>
+  </form>
+</div>
+{% endblock %}

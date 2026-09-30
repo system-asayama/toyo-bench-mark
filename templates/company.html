@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% from "_macros.html" import icon, cta %}
+{% block title %}会社概要｜{{ company.name }}{% endblock %}
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <p class="page-hero__en">COMPANY</p>
+    <h1 class="page-hero__title">会社概要</h1>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container container--narrow">
+    <div class="message">
+      <h2 class="message__title">ごあいさつ</h2>
+      <p>電気は、暮らしにも事業にも欠かせないものです。一方で、電気料金の値上がりや災害時の停電など、エネルギーをめぐる不安も大きくなっています。</p>
+      <p>{{ company.name }}は、電力プランの見直し、太陽光発電、蓄電池の3つを通じて、お客様一人ひとりに合った「電気のかしこい使い方」をご提案してまいります。地元・岡山の会社として、ご相談からアフターサポートまで誠実に対応いたします。どうぞお気軽にご相談ください。</p>
+      <p class="message__sign">代表取締役　{{ company.ceo }}</p>
+    </div>
+
+    <table class="info-table">
+      <tr><th>会社名</th><td>{{ company.name }}<br><small>{{ company.name_en }}</small></td></tr>
+      <tr><th>代表者</th><td>代表取締役　{{ company.ceo }}</td></tr>
+      <tr><th>所在地</th><td>〒{{ company.zip }}<br>{{ company.address }}</td></tr>
+      <tr><th>TEL</th><td><a href="tel:{{ company.tel|replace('-', '') }}">{{ company.tel }}</a></td></tr>
+      <tr><th>FAX</th><td>{{ company.fax }}</td></tr>
+      <tr><th>E-mail</th><td><a href="mailto:{{ company.email }}">{{ company.email }}</a></td></tr>
+      <tr><th>営業時間</th><td>{{ company.hours }}</td></tr>
+      <tr><th>事業内容</th><td><ul class="plain-list">{% for b in company.business %}<li>{{ b }}</li>{% endfor %}</ul></td></tr>
+      <tr><th>対応エリア</th><td>{{ company.area }}</td></tr>
+    </table>
+
+    <div class="map">
+      <iframe title="所在地の地図" src="https://www.google.com/maps?q={{ (company.address)|urlencode }}&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+  </div>
+</section>
+
+{{ cta() }}
+{% endblock %}
